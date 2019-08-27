@@ -2,8 +2,9 @@
 import xlrd
 import pandas as pd
 import numpy as np
+from datetime import datetime
 
-loc = ("//bosch.com/dfsrb/DfsCN/loc/Wx/Dept/TEF/60_MFE_Manufacturing_Engineering/06_Data_Analytics/01_Project/RBCD/cleanliness/DNOX/2.2 -SM-2.xlsx") 
+loc = ("/Users/tef-itm/Documents/cleanliness/xlrd/2.2 -SM-2.xlsx") 
 
 wb = xlrd.open_workbook(loc) 
 
@@ -48,13 +49,16 @@ Dictionary = [
 for item in Dictionary:
     NAME, i, EXCEL_COL_INDEX = item
     j = col_to_index(EXCEL_COL_INDEX)
-    CONTENT = sheet.cell_value(i, j)
+    CONTENT = sheet.cell_value(i-1, j)
     print(NAME, i,j, CONTENT)
 
 pd.DataFrame(np.array(Dictionary),columns=['ProductType',"x","u"])
 
 
-def get_nrow(i = 33, j = 6, sheet):
+
+
+
+def get_nrow(sheet, i = 33, j = 6):
     N = 0
     while True:
         i = 33 + N
@@ -69,6 +73,30 @@ def get_nrow(i = 33, j = 6, sheet):
 N = get_nrow(sheet)
 
 
+for i in range(N):
+    print(sheet.cell_value(31, col_to_index('G')+i*2))
+
+COL_LABELS = [sheet.cell_value(31, col_to_index('G')+i*2) for i in range(N)]
+
+ROW_LABELS = ['Max', 'All', 'Length_Fibre', 'Length_Reflecting', 'Length_Others', 'Width_Fibre', 'Width_Reflecting', 'Width_Others']
+ROW_INDEX = [34, 35, 36, 37, 38, 39, 40, 41]
+
+for i, j in zip(LABELS, ROW_INDEX):
+    print(i,j)
+
+
+for row_label, i in zip(ROW_LABELS, ROW_INDEX):
+    for col_label, j in zip(COL_LABELS, range(N)):
+        
+        value = sheet.cell_value(i - 1, col_to_index('G')+j*2)
+        print(i, j,row_label, col_label, value)
+
+def format_datetime(x):
+    x_as_datetime = datetime(*xlrd.xldate_as_tuple(x, wb.datemode))
+    return(x_as_datetime.strftime("%Y_%m_%d_%H_%M_%S"))
+
+
+format_datetime(x)
 
 
 
@@ -82,21 +110,32 @@ sheet.cell_value(14, col_to_index('N'))
 
 sheet.cell_value(14, col_to_index('T'))
 
+
+
+
+format_date()
+    
+    
+
+from datetime import datetime
 x = sheet.cell_value(14, col_to_index('T'))
+a1_as_datetime = datetime(*xlrd.xldate_as_tuple(x, wb.datemode))
+a1_as_datetime.strftime("%Y_%m_%d_%H_%M_%S")
+
+
+
+
 
 
 py_date = datetime.datetime(*xlrd.xldate_as_tuple(a[0].value,
                                                   book.datemode))
 
-a1_as_datetime = datetime(*xlrd.xldate_as_tuple(x, wb.datemode))
 
 
 a1_as_datetime.strftime("%m/%d/%Y, %H:%M:%S")
 
-a1_as_datetime.strftime("%Y_%m_%d_%H_%M_%S")
 
 import datetime
-from datetime import datetime
 
 
 
