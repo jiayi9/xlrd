@@ -1,4 +1,6 @@
-CREATE TABLE REPORTS (
+
+
+CREATE TABLE Reports (
 	ANALYSIS_NO varchar(255),
 	EXTRACTION_DEVICE varchar(255),
 	TEST_SPEC varchar(255),
@@ -23,13 +25,17 @@ CREATE TABLE REPORTS (
 	DATETIME varchar(255),
 	COMMENT varchar(255),
 	YEAR varchar(255),
-	FILE varchar(255)
+	FILE_PATH varchar(255),
 );
 
-create table results (
+create table Results (
 	ANALYSIS_NO varchar(255),
 	STANDARD varchar(255),
 	ITEM varchar(255),
 	SIZE varchar(255),
 	VALUE float
 );
+
+
+drop table Reports;
+drop table Results;
