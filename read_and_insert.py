@@ -1,11 +1,16 @@
+
 import xlrd
 from datetime import datetime
 import pyodbc
 
 #############################################  Part 0: Set-up  #############################################
 
-loc = ("//bosch.com/dfsrb/DfsCN/loc/Wx/Dept/TEF/60_MFE_Manufacturing_Engineering/06_Data_Analytics/01_Project/RBCD/cleanliness/DNOX/2.2 -SM-2.xlsx") 
+#loc = ("//bosch.com/dfsrb/DfsCN/loc/Wx/Dept/TEF/60_MFE_Manufacturing_Engineering/06_Data_Analytics/01_Project/RBCD/cleanliness/DNOX/2.2 -SM-2.xlsx") 
 #loc = ("/Users/tef-itm/Documents/cleanliness/xlrd/2.2 -SM-2.xlsx") 
+FILE_PATH = "//bosch.com/dfsrb/DfsCN/loc/Wx/Dept/TEF/60_MFE_Manufacturing_Engineering/06_Data_Analytics/01_Project/RBCD/cleanliness/DNOX/2.2 -SM-2.xlsx"
+FILE_NAME = "2.2 -SM-2.xlsx"
+
+loc = (FILE_PATH)
 
 CONNECTION_STRING = (
         'Driver={SQL Server};'
@@ -34,9 +39,8 @@ def format_datetime_2(x):
 def get_nrow(sheet, i = 33, j = 6):
     N = 0
     while True:
-        i = 33 + N
-        value = str(sheet.cell_value(i, 6))
-        print(value)
+        tmp = i + N
+        value = str(sheet.cell_value(tmp, j))
         if value != '':
             N = N + 1
         else:
@@ -95,6 +99,8 @@ Dictionary[-2][3] = format_datetime_2(Dictionary[-2][3])
 cursor = conn.cursor()
 
 VALUES = [str(x[3]) for x in Dictionary]
+VALUES.append(Dictionary[0][3][0:4])
+VALUES.append(FILE_NAME)
 sep = "','"
 VALUE_sep = sep.join(VALUES)
 STRING = "insert into REPORTS values ('" + VALUE_sep +"')"
