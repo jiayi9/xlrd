@@ -2,6 +2,17 @@
 import xlrd
 from datetime import datetime
 import pyodbc
+import os
+
+def list_files_recur(path, format = '.xlsx'):
+    file_paths = []
+    file_names = []
+    for r, d, f in os.walk(path):
+        for file in f:
+            if '.txt' in file:
+                file_paths.append(os.path.join(r, file))
+                file_names.append(file)
+    return([file_paths, file_names])
 
 def col_to_index(col):
     return sum((ord(c) - 64) * 26**i for i, c in enumerate(reversed(col))) - 1
