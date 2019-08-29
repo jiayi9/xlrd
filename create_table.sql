@@ -21,7 +21,9 @@ CREATE TABLE REPORTS (
 	RESULT varchar(255),
 	INSPECTOR varchar(255),
 	DATETIME varchar(255),
-	COMMENT varchar(255)
+	COMMENT varchar(255),
+	YEAR varchar(255),
+	FILE varchar(255)
 );
 
 create table results (
