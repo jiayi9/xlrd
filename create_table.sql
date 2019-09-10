@@ -22,14 +22,13 @@ CREATE TABLE Reports (
 	POPULATION_DENSITY varchar(255),
 	RESULT varchar(255),
 	INSPECTOR varchar(255),
-	DATETIME varchar(255),
+	DATETIME datetime,
 	COMMENT varchar(255),
 	YEAR varchar(255),
 	FILE_PATH varchar(255),
 	
 	REMARK varchar(255),
-	AREA varchar(255),
-	DATETIME datetime
+	AREA varchar(255)
 	
 );
 
