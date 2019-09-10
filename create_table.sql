@@ -1,5 +1,3 @@
-
-
 CREATE TABLE Reports (
 	ANALYSIS_NO varchar(255),
 	EXTRACTION_DEVICE varchar(255),
@@ -24,13 +22,13 @@ CREATE TABLE Reports (
 	INSPECTOR varchar(255),
 	DATETIME datetime,
 	COMMENT varchar(255),
-	YEAR varchar(255),
-	FILE_PATH varchar(255),
-	FILE_NAME varchar(255),
 	REMARK varchar(255),
-	AREA varchar(255)
-	
+	AREA varchar(255),
+	FILE_NAME varchar(255),
+	FILE_PATH varchar(255)
 );
+
+
 
 create table Results (
 	ANALYSIS_NO varchar(255),
