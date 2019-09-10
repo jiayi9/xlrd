@@ -26,7 +26,7 @@ CREATE TABLE Reports (
 	COMMENT varchar(255),
 	YEAR varchar(255),
 	FILE_PATH varchar(255),
-	
+	FILE_NAME varchar(255),
 	REMARK varchar(255),
 	AREA varchar(255)
 	
