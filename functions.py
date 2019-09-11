@@ -1,30 +1,79 @@
-
 import xlrd
-from datetime import datetime
 import pyodbc
 import os
+from datetime import datetime
 
+# clear log file
+def clear_log_file(PATH, MAX = 50000):
+    status = 0
+    try:
+        N = len(open(PATH).readlines())
+        #print('Row count:', N, '< Limit')
+    except:
+        print('Reading log file error.')
+        status = -1
+        return(status)
+    if N > MAX:
+        print('Detected row count > Limit. Clean the log at ', PATH)
+        file = open(PATH ,"w")
+        file.truncate(0)
+        file.close()
+        NEW_N = len(open(PATH).readlines())
+        if NEW_N < 100:
+            status = 1
+            print('Successfully cleared ', PATH)
+        else:
+            status = 2
+            print('Cleared log file but the latest row count is > 100')
+    else:
+        status = 9
+    return(status)
+
+# write a line to a log
+def append_log(CONTENT, LOG_FILE):
+    with open(LOG_FILE, 'a') as file:
+        file.write('\n' + CONTENT)
+
+# output indexes of current files
+def write_list_into_rows(LIST, PATH):
+    with open(PATH, "w") as f:
+        for s in LIST:
+            f.write(str(s) +"\n")
+
+# retrieve the list of current files
+def read_rows_into_list(PATH):
+    L = []
+    with open(PATH, "r") as f:
+        for line in f:
+            L.append(line.strip())
+    return(L)
+
+# list all files under a folder recursively
 def list_files_recur(path, format = '.xlsx'):
     file_paths = []
     file_names = []
     for r, d, f in os.walk(path):
         for file in f:
-            if '.txt' in file:
+            if format in file:
                 file_paths.append(os.path.join(r, file))
                 file_names.append(file)
     return([file_paths, file_names])
 
+# excel operation: A->1, B->2
 def col_to_index(col):
     return sum((ord(c) - 64) * 26**i for i, c in enumerate(reversed(col))) - 1
 
+# format for reprot ID
 def format_datetime_1(x, wb):
     x_as_datetime = datetime(*xlrd.xldate_as_tuple(x, wb.datemode))
     return(x_as_datetime.strftime("%Y_%m_%d_%H_%M_%S"))
 
+# format for datetime string
 def format_datetime_2(x, wb):
     x_as_datetime = datetime(*xlrd.xldate_as_tuple(x, wb.datemode))
     return(x_as_datetime.strftime("%Y-%m-%d %H:%M:%S"))
 
+# count the number of columns in result table
 def get_nrow(sheet, i = 31, j = 6):
     #33
     N = 0
@@ -39,6 +88,7 @@ def get_nrow(sheet, i = 31, j = 6):
             break
     return(NCOL)
 
+# extract information from the reprot and save in a list of report, results and file path
 def read_to_list(FILE_PATH, AREA = "MOE3"):
     wb = xlrd.open_workbook(FILE_PATH) 
     sheet = wb.sheet_by_index(0) 
@@ -112,6 +162,7 @@ def read_to_list(FILE_PATH, AREA = "MOE3"):
     L = [L_Reports, L_Results, FILE_PATH]
     return(L)
 
+# insert the List into database
 def insert_to_database(L, CONNECTION_STRING = ('Driver={SQL Server};''Server=WX1SRV41\SQLEXPRESS;''Database=CLEANLINESS;''Trusted_Connection=yes;')):
     L_Reports, L_Results, FILE_PATH = L
     conn = pyodbc.connect(CONNECTION_STRING)
