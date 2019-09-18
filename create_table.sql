@@ -59,5 +59,3 @@ where STANDARD like '%[^P]'
 ;
 
 select * from Reports_view;
-
-select * from Reports_view
