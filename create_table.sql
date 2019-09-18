@@ -41,3 +41,23 @@ create table Results (
 
 drop table Reports;
 drop table Results;
+
+
+
+
+
+drop view Reports_view;
+
+create view Reports_view as
+select ANALYSIS_NO, 
+STANDARD,
+replace(replace(component_no, '-', ''),' ', '') as COMPONENT_NO,
+DATETIME,
+REMARK 
+from Reports
+where STANDARD like '%[^P]'
+;
+
+select * from Reports_view;
+
+select * from Reports_view
